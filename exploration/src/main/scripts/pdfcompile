@@ -1,0 +1,27 @@
+#!/bin/bash
+# USAGE: $./pdfcompile [PDF|DVI] filename (without .tex extension)
+#
+case $1 in
+
+	"DVI")
+		echo "DVI"
+		latex $2.tex
+		bibtex $2
+		latex $2.tex
+		latex $2.tex
+		dvips $2.dvi
+		dvips -Ppdf -tletter -G0 -o $2.ps $2.dvi 
+		ps2pdf $2.ps
+		rm -f $2.aux $2.blg $2.dvi $2.log $2.out $2.bbl
+		;;
+
+	"PDF")
+		echo "PDF"
+		pdflatex $2.tex
+		bibtex $2
+		pdflatex $2.tex
+		pdflatex $2.tex
+		rm -f $2.aux $2.blg $2.dvi $2.log $2.out $2.bbl
+		;;
+
+esac
